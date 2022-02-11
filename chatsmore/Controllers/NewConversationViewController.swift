@@ -9,6 +9,8 @@ import UIKit
 
 class NewConversationViewController: UIViewController {
     
+    public var completion: (([String: String]) -> (Void))?
+    
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "Search for Users"

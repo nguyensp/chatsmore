@@ -22,13 +22,21 @@ struct Sender: SenderType {
 }
 
 class ChatViewController: MessagesViewController {
+    //public let otherUserEmail: String
+    //public var isNewConversation = false
     
     private var messages = [Message]()
     
     private let selfSender = Sender(photoURL: "",
                                     senderId: "1",
                                     displayName: "Joe Smith")
-
+/*
+    init(with email: String) {
+        self.otherUserEmail = email
+        super.init(nibName: nil, bundle: nil)
+    }
+ */
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,6 +52,7 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
+        //messageInputBar.delegate = self
     }
 }
 
