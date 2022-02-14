@@ -91,7 +91,9 @@ class ChatViewController: MessagesViewController {
         self.conversationId = id
         self.otherUserEmail = email
         super.init(nibName: nil, bundle: nil)
-        
+        if let conversationId = conversationId {
+            listenForMessages(id: conversationId, shouldScrollToBottom: true)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -104,8 +106,9 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
-        messagesCollectionView.messageCellDelegate
+        messagesCollectionView.messageCellDelegate = self
         messageInputBar.delegate = self
+        setupInputButton()
     }
     
     private func setupInputButton() {
@@ -212,7 +215,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         
         
         // Upload Image
-        StorageManager.shared.uploadMessagePhoto(with: imageData, fileName: "", completion: { [weak self] result in
+        StorageManager.shared.uploadMessagePhoto(with: imageData, fileName: fileName, completion: { [weak self] result in
             guard let strongSelf = self else {
                 return
             }
@@ -342,10 +345,6 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
             imageView.sd_setImage(with: imageUrl, completed: nil)
         default: break
         }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
     }
 }
 
