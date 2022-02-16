@@ -114,7 +114,7 @@ class ChatViewController: MessagesViewController {
     private func setupInputButton() {
         let button = InputBarButtonItem()
         button.setSize(CGSize(width: 35, height: 35), animated: false)
-        button.setImage(UIImage(systemName: "paperclip"), for: .normal)
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.onTouchUpInside{ [weak self] _ in
             self?.presentInputActionSheet()
         }
@@ -203,13 +203,13 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
         guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage,
-        let imageData = image.pngData(),
-        let messageId = createMessageId(),
-        let conversationId = conversationId,
-        let name = self.title,
-        let selfSender = self.selfSender else {
-            return
-        }
+              let imageData = image.pngData(),
+              let messageId = createMessageId(),
+              let conversationId = conversationId,
+              let name = self.title,
+              let selfSender = self.selfSender else {
+                  return
+            }
         
         let fileName = "photo_message_" + messageId.replacingOccurrences(of: " ", with: "-") + ".png"
         
@@ -235,7 +235,10 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                                   size: .zero)
                 
                 
-                let message = Message(sender: selfSender, messageId: messageId, sentDate: Date(), kind: .photo(media))
+                let message = Message(sender: selfSender,
+                                      messageId: messageId,
+                                      sentDate: Date(),
+                                      kind: .photo(media))
                 
                 DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: strongSelf.otherUserEmail, name: name, newMessage: message, completion: { success in
                     if success {
@@ -299,9 +302,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         }
     }
     
-    private func createMessageId() -> String? {
-        //date, otherUserEmail, senderEmail, randomInt
-        
+    private func createMessageId() -> String? {        
         guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {
             return nil
         }
@@ -343,7 +344,8 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
                 return
             }
             imageView.sd_setImage(with: imageUrl, completed: nil)
-        default: break
+        default:
+            break
         }
     }
 }

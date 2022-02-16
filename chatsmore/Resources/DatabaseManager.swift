@@ -297,7 +297,7 @@ extension DatabaseManager {
             "name": name
         ]
         
-        let value:[String: Any] = [
+        let value: [String: Any] = [
             "messages": [
                 collectionMessage
             ]
@@ -435,7 +435,10 @@ extension DatabaseManager {
                 message = messageText
             case .attributedText(_):
                 break
-            case .photo(_):
+            case .photo(let mediaItem):
+                if let targetUrlString = mediaItem.url?.absoluteString {
+                    message = targetUrlString
+                }
                 break
             case .video(_):
                 break
