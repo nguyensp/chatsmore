@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		370E698527BD08E500233D12 /* IceBreakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370E698427BD08E500233D12 /* IceBreakerViewController.swift */; };
 		379B0F9827B325570022B131 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379B0F9727B325570022B131 /* AppDelegate.swift */; };
 		379B0F9A27B325570022B131 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379B0F9927B325570022B131 /* SceneDelegate.swift */; };
 		379B0F9C27B325570022B131 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379B0F9B27B325570022B131 /* ConversationsViewController.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		370E698427BD08E500233D12 /* IceBreakerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IceBreakerViewController.swift; sourceTree = "<group>"; };
 		379B0F9427B325570022B131 /* chatsmore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatsmore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		379B0F9727B325570022B131 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		379B0F9927B325570022B131 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				379B0FB927B327E70022B131 /* NewConversationViewController.swift */,
 				379B0FBB27B328010022B131 /* ProfileViewController.swift */,
 				37BBE8CE27B5EF5000D9260F /* ChatViewController.swift */,
+				370E698427BD08E500233D12 /* IceBreakerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				379B0FB227B327720022B131 /* LoginViewController.swift in Sources */,
+				370E698527BD08E500233D12 /* IceBreakerViewController.swift in Sources */,
 				37BBE8CD27B5B96D00D9260F /* DatabaseManager.swift in Sources */,
 				379B0FB427B3279D0022B131 /* RegisterViewController.swift in Sources */,
 				379B0FBA27B327E70022B131 /* NewConversationViewController.swift in Sources */,

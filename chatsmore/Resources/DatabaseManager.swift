@@ -243,14 +243,6 @@ extension DatabaseManager {
     }
     
     private func finishCreatingConveration(name: String, conversationID: String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
-//        {
-//            "id": String,
-//            "type": text, photo, video,
-//            "content": String,
-//            "date": Date(),
-//            "sender_email": String,
-//            "isRead": true/false
-//        }
         
         let messageDate = firstMessage.sentDate
         let dateString = ChatViewController.dateFormatter.string(from: messageDate)
@@ -358,7 +350,7 @@ extension DatabaseManager {
             
             let messages: [Message] = value.compactMap({ dictionary in
                 guard let name = dictionary["name"] as? String,
-                      let isRead = dictionary["is_read"] as? Bool,
+                      //let isRead = dictionary["is_read"] as? Bool,
                       let messageID = dictionary["id"] as? String,
                       let content = dictionary["content"] as? String,
                       let senderEmail = dictionary["sender_email"] as? String,
