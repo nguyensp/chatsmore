@@ -329,11 +329,15 @@ extension DatabaseManager {
                                                          text: message,
                                                          isRead: isRead)
                 
+                UserDefaults.standard.set(otherUserEmail, forKey: "otherUserEmail")
+                
                 return Conversation(id: conversationId,
                                     name: name,
                                     otherUserEmail: otherUserEmail,
                                     latestMessage: latestMessageObject)
             })
+            
+            
             
             completion(.success(conversations))
         })

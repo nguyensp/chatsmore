@@ -61,6 +61,8 @@ struct Media: MediaItem {
 
 class ChatViewController: MessagesViewController {
     
+    var firstFlag = true
+    
     private var senderPhotoURL: URL?
     private var otherUserPhotoURL: URL?
     
@@ -165,7 +167,8 @@ class ChatViewController: MessagesViewController {
         
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
-        present(actionSheet, animated: true)    }
+        present(actionSheet, animated: true)
+    }
     
     private func listenForMessages(id: String, shouldScrollToBottom: Bool) {
         DatabaseManager.shared.getAllMessagesForConversation(with: id, completion: { [weak self] result in
@@ -192,10 +195,19 @@ class ChatViewController: MessagesViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if firstFlag == true {
+            iceBreakerScreen()
+        }
         messageInputBar.inputTextView.becomeFirstResponder()
         if let conversationId = conversationId {
             listenForMessages(id: conversationId, shouldScrollToBottom: true)
         }
+    }
+    
+    private func iceBreakerScreen() {
+        let vc = IceBreakerViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+        firstFlag = false
     }
 }
 

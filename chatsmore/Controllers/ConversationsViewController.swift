@@ -24,11 +24,6 @@ struct LatestMessage {
 
 class ConversationsViewController: UIViewController {
     
-    let buttonOne = UIButton()
-    let buttonTwo = UIButton()
-    let buttonThree = UIButton()
-    let buttonFour = UIButton()
-    
     private let spinner = JGProgressHUD(style: .dark)
     
     private var conversations = [Conversation]()
