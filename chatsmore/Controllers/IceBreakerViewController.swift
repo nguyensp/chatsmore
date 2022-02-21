@@ -18,6 +18,8 @@ class IceBreakerViewController: MessagesViewController {
     let boltButton = UIButton()
     let planeButton = UIButton()
     let xButton = UIButton()
+    let otherUserName = UILabel()
+    let bubble = UILabel()
     var buttonSize: CGFloat = 20
     var sparkOn: Bool = false
     
@@ -36,7 +38,7 @@ class IceBreakerViewController: MessagesViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemOrange
         plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         boltButton.addTarget(self, action: #selector(boltButtonTapped), for: .touchUpInside)
         buttonOne.addTarget(self, action: #selector(boltButtonTapped), for: .touchUpInside)
@@ -46,9 +48,18 @@ class IceBreakerViewController: MessagesViewController {
         xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         showOtherUserProfile()
         configureButtons()
+        bubble.backgroundColor = .lightGray
+        bubble.alpha = 0.3
+        bubble.frame.size.width = 275
+        bubble.frame.size.height = 300
+        bubble.center.y = view.center.y + 170
+        bubble.center.x = view.center.x
+
+        view.addSubview(bubble)
     }
     
     func showOtherUserProfile() {
+        
         guard let otherUserEmail = UserDefaults.standard.value(forKey: "otherUserEmail") as? String else {
             return
         }
@@ -63,8 +74,8 @@ class IceBreakerViewController: MessagesViewController {
                                         height: 300))
         
         headerView.backgroundColor = .link
-        let imageView = UIImageView(frame: CGRect(x: (view.width-150) / 2,
-                                                  y: (view.height) / 9,
+        let imageView = UIImageView(frame: CGRect(x: (view.width - 150) / 2,
+                                                  y: (view.height) / 6,
                                                   width: 150,
                                                   height: 150))
         
@@ -150,13 +161,17 @@ class IceBreakerViewController: MessagesViewController {
     }
     
     func configureButtons() {
+        
+        
         plusButton.configuration = .filled()
-        plusButton.configuration?.image = UIImage(systemName: "plus.circle")
+        plusButton.configuration?.image = UIImage(systemName: "plus")
         plusButton.configuration?.background.cornerRadius = buttonSize
+        plusButton.configuration?.baseBackgroundColor = .orange
 
         boltButton.configuration = .filled()
-        boltButton.configuration?.image = UIImage(systemName: "bolt.circle")
+        boltButton.configuration?.image = UIImage(systemName: "bolt.fill")
         boltButton.configuration?.background.cornerRadius = buttonSize
+        boltButton.configuration?.baseBackgroundColor = .orange
         
         planeButton.configuration = .filled()
         planeButton.configuration?.image = UIImage(systemName: "paperplane.circle")
@@ -165,10 +180,12 @@ class IceBreakerViewController: MessagesViewController {
         xButton.configuration = .filled()
         xButton.configuration?.image = UIImage(systemName: "x.circle")
         xButton.configuration?.background.cornerRadius = buttonSize
+        xButton.configuration?.baseBackgroundColor = .red
         
         buttonOne.configuration = .tinted()
         buttonOne.configuration?.baseBackgroundColor = .systemOrange
         buttonOne.configuration?.baseForegroundColor = .systemOrange
+        buttonOne.configuration?.background.cornerRadius = buttonSize
         buttonOne.configuration?.title = "What's your COVID silver lining?"
         buttonOne.configuration?.image = UIImage(systemName: "questionmark.circle")
         buttonOne.configuration?.imagePadding = 5
@@ -177,6 +194,7 @@ class IceBreakerViewController: MessagesViewController {
         buttonTwo.configuration = .tinted()
         buttonTwo.configuration?.baseBackgroundColor = .systemOrange
         buttonTwo.configuration?.baseForegroundColor = .systemOrange
+        buttonTwo.configuration?.background.cornerRadius = buttonSize
         buttonTwo.configuration?.title = "Favorite sports team?"
         buttonTwo.configuration?.image = UIImage(systemName: "questionmark.circle")
         buttonTwo.configuration?.imagePadding = 5
@@ -184,6 +202,7 @@ class IceBreakerViewController: MessagesViewController {
         buttonThree.configuration = .tinted()
         buttonThree.configuration?.baseBackgroundColor = .systemOrange
         buttonThree.configuration?.baseForegroundColor = .systemOrange
+        buttonThree.configuration?.background.cornerRadius = buttonSize
         buttonThree.configuration?.title = "Dream celebrity date (alive or dead)?"
         buttonThree.configuration?.image = UIImage(systemName: "questionmark.circle")
         buttonThree.configuration?.imagePadding = 5
@@ -191,6 +210,7 @@ class IceBreakerViewController: MessagesViewController {
         buttonFour.configuration = .tinted()
         buttonFour.configuration?.baseBackgroundColor = .systemOrange
         buttonFour.configuration?.baseForegroundColor = .systemOrange
+        buttonFour.configuration?.background.cornerRadius = buttonSize
         buttonFour.configuration?.title = "Favorite show on Netflix?"
         buttonFour.configuration?.image = UIImage(systemName: "questionmark.circle")
         buttonFour.configuration?.imagePadding = 5
@@ -208,18 +228,26 @@ class IceBreakerViewController: MessagesViewController {
         plusButton.translatesAutoresizingMaskIntoConstraints = false
         boltButton.translatesAutoresizingMaskIntoConstraints = false
         planeButton.translatesAutoresizingMaskIntoConstraints = false
+        //bubble.translatesAutoresizingMaskIntoConstraints = false
         
         
         NSLayoutConstraint.activate([
+            /*
+            bubble.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            bubble.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            bubble.widthAnchor.constraint(equalToConstant: 250),
+            bubble.heightAnchor.constraint(equalToConstant: 250),
+             */
+            
             plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             plusButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            plusButton.widthAnchor.constraint(equalToConstant: buttonSize),
-            plusButton.heightAnchor.constraint(equalToConstant: buttonSize),
+            plusButton.widthAnchor.constraint(equalToConstant: 25),
+            plusButton.heightAnchor.constraint(equalToConstant: 25),
             
             boltButton.leftAnchor.constraint(equalTo: plusButton.rightAnchor, constant: 20),
             boltButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            boltButton.widthAnchor.constraint(equalToConstant: buttonSize),
-            boltButton.heightAnchor.constraint(equalToConstant: buttonSize),
+            boltButton.widthAnchor.constraint(equalToConstant: 30),
+            boltButton.heightAnchor.constraint(equalToConstant: 30),
             
             planeButton.leftAnchor.constraint(equalTo: boltButton.rightAnchor, constant: 20),
             planeButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
