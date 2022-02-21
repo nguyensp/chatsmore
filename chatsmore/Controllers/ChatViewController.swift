@@ -91,14 +91,13 @@ class ChatViewController: MessagesViewController {
         
     }
     
-    
-    
     init(with email: String, id: String?) {
         self.conversationId = id
         self.otherUserEmail = email
         super.init(nibName: nil, bundle: nil)
         if let conversationId = conversationId {
             listenForMessages(id: conversationId, shouldScrollToBottom: true)
+            UserDefaults.standard.set(conversationId, forKey: "conversationId")
         }
     }
     
@@ -128,7 +127,7 @@ class ChatViewController: MessagesViewController {
         messageInputBar.setStackViewItems([button], forStack: .left, animated: false)
     }
     
-    private func presentInputActionSheet() {
+    func presentInputActionSheet() {
         let actionSheet = UIAlertController(title: "Attach Media",
                                             message: "What would you like to attach?",
                                             preferredStyle: .actionSheet)
@@ -205,9 +204,18 @@ class ChatViewController: MessagesViewController {
     }
     
     private func iceBreakerScreen() {
+        /*
         let vc = IceBreakerViewController()
         self.navigationController?.pushViewController(vc, animated: true)
         firstFlag = false
+        */
+        let nav = self.navigationController //grab an instance of the current navigationController
+            DispatchQueue.main.async { //make sure all UI updates are on the main thread.
+                nav?.view.layer.add(CATransition().segueFromTop(), forKey: nil)
+                nav?.pushViewController(IceBreakerViewController(), animated: true)
+            }
+        firstFlag = false
+        
     }
 }
 
@@ -226,9 +234,8 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
               let selfSender = self.selfSender else {
                   return
             }
-        
+        UserDefaults.standard.set(name, forKey: "name")
         let fileName = "photo_message_" + messageId.replacingOccurrences(of: " ", with: "-") + ".png"
-        
         
         // Upload Image
         StorageManager.shared.uploadMessagePhoto(with: imageData, fileName: fileName, completion: { [weak self] result in
@@ -250,7 +257,6 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                                   placeholderImage: placeholder,
                                   size: .zero)
                 
-                
                 let message = Message(sender: selfSender,
                                       messageId: messageId,
                                       sentDate: Date(),
@@ -268,7 +274,6 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                 print("message photo upload error: \(error)")
             }
         })
-        // Send Message
     }
 }
 
@@ -316,6 +321,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                 }
             })
         }
+        inputBar.inputTextView.text = ""
     }
     
     private func createMessageId() -> String? {        
@@ -438,3 +444,48 @@ extension ChatViewController: MessageCellDelegate {
         }
     }
 }
+
+extension CATransition {
+
+//New viewController will appear from bottom of screen.
+func segueFromBottom() -> CATransition {
+    self.duration = 0.375 //set the duration to whatever you'd like.
+    self.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+    self.type = CATransitionType.moveIn
+    self.subtype = CATransitionSubtype.fromTop
+    return self
+}
+//New viewController will appear from top of screen.
+func segueFromTop() -> CATransition {
+    self.duration = 0.375 //set the duration to whatever you'd like.
+    self.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+    self.type = CATransitionType.moveIn
+    self.subtype = CATransitionSubtype.fromBottom
+    return self
+}
+ //New viewController will appear from left side of screen.
+func segueFromLeft() -> CATransition {
+    self.duration = 0.1 //set the duration to whatever you'd like.
+    self.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+    self.type = CATransitionType.moveIn
+    self.subtype = CATransitionSubtype.fromLeft
+    return self
+}
+//New viewController will pop from right side of screen.
+func popFromRight() -> CATransition {
+    self.duration = 0.1 //set the duration to whatever you'd like.
+    self.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+    self.type = CATransitionType.reveal
+    self.subtype = CATransitionSubtype.fromRight
+    return self
+}
+//New viewController will appear from left side of screen.
+func popFromLeft() -> CATransition {
+    self.duration = 0.1 //set the duration to whatever you'd like.
+    self.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+    self.type = CATransitionType.reveal
+    self.subtype = CATransitionSubtype.fromLeft
+    return self
+   }
+}
+

@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import MessageKit
 
-class IceBreakerViewController: UIViewController {
+class IceBreakerViewController: MessagesViewController {
     
     let buttonOne = UIButton()
     let buttonTwo = UIButton()
@@ -16,23 +17,43 @@ class IceBreakerViewController: UIViewController {
     let plusButton = UIButton()
     let boltButton = UIButton()
     let planeButton = UIButton()
+    let xButton = UIButton()
+    var buttonSize: CGFloat = 20
     var sparkOn: Bool = false
+    
+    private var messages = [Message]()
+    
+    private var selfSender: Sender? {
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
+            return nil
+        }
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+        return Sender(photoURL: "",
+                      senderId: safeEmail,
+                      displayName: "Me")
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         boltButton.addTarget(self, action: #selector(boltButtonTapped), for: .touchUpInside)
+        buttonOne.addTarget(self, action: #selector(boltButtonTapped), for: .touchUpInside)
+        buttonTwo.addTarget(self, action: #selector(boltButtonTapped), for: .touchUpInside)
+        buttonThree.addTarget(self, action: #selector(boltButtonTapped), for: .touchUpInside)
+        buttonFour.addTarget(self, action: #selector(boltButtonTapped), for: .touchUpInside)
+        xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
         showOtherUserProfile()
         configureButtons()
     }
     
     func showOtherUserProfile() {
-        guard let email = UserDefaults.standard.value(forKey: "otherUserEmail") as? String else {
+        guard let otherUserEmail = UserDefaults.standard.value(forKey: "otherUserEmail") as? String else {
             return
         }
         
-        let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: otherUserEmail)
         let filename = safeEmail + "_profile_picture.png"
         
         let path = "images/" + filename
@@ -84,44 +105,66 @@ class IceBreakerViewController: UIViewController {
     
     @objc private func boltButtonTapped() {
         if (sparkOn == false) {
+            self.addIceBreakers()
             UIView.animate(withDuration: 1.0) {
-                self.buttonOne.alpha = 1.0
-                self.buttonTwo.alpha = 1.0
-                self.buttonThree.alpha = 1.0
-                self.buttonFour.alpha = 1.0
-                self.view.addSubview(self.buttonOne)
-                self.view.addSubview(self.buttonTwo)
-                self.view.addSubview(self.buttonThree)
-                self.view.addSubview(self.buttonFour)
-                self.configureButtons()
+                self.boltButton.alpha = 0.0
             }
             sparkOn = true
-        } else {
+        }
+    }
+    
+    @objc private func xButtonTapped() {
+        if (sparkOn == true) {
             UIView.animate(withDuration: 1.0) {
                 self.buttonOne.alpha = 0.0
                 self.buttonTwo.alpha = 0.0
                 self.buttonThree.alpha = 0.0
                 self.buttonFour.alpha = 0.0
+                self.xButton.alpha = 0.0
+                self.boltButton.alpha = 1.0
                 
                 self.buttonOne.removeFromSuperview()
                 self.buttonTwo.removeFromSuperview()
                 self.buttonThree.removeFromSuperview()
                 self.buttonFour.removeFromSuperview()
+                self.xButton.removeFromSuperview()
             }
             sparkOn = false
         }
     }
     
+    @objc private func buttonOneTapped() {
+        
+    }
+    
+    @objc private func buttonTwoTapped() {
+        
+    }
+    
+    @objc private func buttonThreeTapped() {
+        
+    }
+    
+    @objc private func buttonFourTapped() {
+        
+    }
+    
     func configureButtons() {
         plusButton.configuration = .filled()
         plusButton.configuration?.image = UIImage(systemName: "plus.circle")
-        
-        
+        plusButton.configuration?.background.cornerRadius = buttonSize
+
         boltButton.configuration = .filled()
         boltButton.configuration?.image = UIImage(systemName: "bolt.circle")
+        boltButton.configuration?.background.cornerRadius = buttonSize
         
         planeButton.configuration = .filled()
         planeButton.configuration?.image = UIImage(systemName: "paperplane.circle")
+        planeButton.configuration?.background.cornerRadius = buttonSize
+        
+        xButton.configuration = .filled()
+        xButton.configuration?.image = UIImage(systemName: "x.circle")
+        xButton.configuration?.background.cornerRadius = buttonSize
         
         buttonOne.configuration = .tinted()
         buttonOne.configuration?.baseBackgroundColor = .systemOrange
@@ -159,38 +202,59 @@ class IceBreakerViewController: UIViewController {
     func addButtonConstraints() {
         view.addSubview(plusButton)
         view.addSubview(boltButton)
+        planeButton.alpha = 0.0
         view.addSubview(planeButton)
+        
+        plusButton.translatesAutoresizingMaskIntoConstraints = false
+        boltButton.translatesAutoresizingMaskIntoConstraints = false
+        planeButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        NSLayoutConstraint.activate([
+            plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            plusButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            plusButton.widthAnchor.constraint(equalToConstant: buttonSize),
+            plusButton.heightAnchor.constraint(equalToConstant: buttonSize),
+            
+            boltButton.leftAnchor.constraint(equalTo: plusButton.rightAnchor, constant: 20),
+            boltButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            boltButton.widthAnchor.constraint(equalToConstant: buttonSize),
+            boltButton.heightAnchor.constraint(equalToConstant: buttonSize),
+            
+            planeButton.leftAnchor.constraint(equalTo: boltButton.rightAnchor, constant: 20),
+            planeButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            planeButton.widthAnchor.constraint(equalToConstant: buttonSize),
+            planeButton.heightAnchor.constraint(equalToConstant: buttonSize),
+        ])
+    }
+    
+    func addIceBreakers() {
+        buttonOne.alpha = 0.0
+        buttonTwo.alpha = 0.0
+        buttonThree.alpha = 0.0
+        buttonFour.alpha = 0.0
         
         view.addSubview(buttonOne)
         view.addSubview(buttonTwo)
         view.addSubview(buttonThree)
         view.addSubview(buttonFour)
-         
+        view.addSubview(xButton)
         
-        plusButton.translatesAutoresizingMaskIntoConstraints = false
-        boltButton.translatesAutoresizingMaskIntoConstraints = false
-        planeButton.translatesAutoresizingMaskIntoConstraints = false
+        UIView.animate(withDuration: 1.0) {
+            self.buttonOne.alpha = 1.0
+            self.buttonTwo.alpha = 1.0
+            self.buttonThree.alpha = 1.0
+            self.buttonFour.alpha = 1.0
+            self.xButton.alpha = 1.0
+        }
+        
+        xButton.translatesAutoresizingMaskIntoConstraints = false
         buttonOne.translatesAutoresizingMaskIntoConstraints = false
         buttonTwo.translatesAutoresizingMaskIntoConstraints = false
         buttonThree.translatesAutoresizingMaskIntoConstraints = false
         buttonFour.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            plusButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            plusButton.widthAnchor.constraint(equalToConstant: 50),
-            plusButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            boltButton.leftAnchor.constraint(equalTo: plusButton.rightAnchor, constant: 20),
-            boltButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            boltButton.widthAnchor.constraint(equalToConstant: 50),
-            boltButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            planeButton.leftAnchor.constraint(equalTo: boltButton.rightAnchor, constant: 20),
-            planeButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            planeButton.widthAnchor.constraint(equalToConstant: 50),
-            planeButton.heightAnchor.constraint(equalToConstant: 50),
-            
             buttonOne.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonOne.topAnchor.constraint(equalTo: plusButton.bottomAnchor, constant: 20),
             buttonOne.widthAnchor.constraint(equalToConstant: 260),
@@ -210,6 +274,11 @@ class IceBreakerViewController: UIViewController {
             buttonFour.topAnchor.constraint(equalTo: buttonThree.bottomAnchor, constant: 20),
             buttonFour.widthAnchor.constraint(equalToConstant: 260),
             buttonFour.heightAnchor.constraint(equalToConstant: 50),
+            
+            xButton.leftAnchor.constraint(equalTo: buttonOne.rightAnchor, constant: 20),
+            xButton.topAnchor.constraint(equalTo: plusButton.bottomAnchor, constant: 20),
+            xButton.widthAnchor.constraint(equalToConstant: buttonSize),
+            xButton.heightAnchor.constraint(equalToConstant: buttonSize),
         ])
     }
 }
@@ -237,6 +306,28 @@ extension IceBreakerViewController: UIImagePickerControllerDelegate, UINavigatio
      present(actionSheet, animated: true)
     }
     
+    public static let dateFormatter: DateFormatter = {
+       let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .long
+        formatter.locale = .current
+        return formatter
+    }()
+    
+    private func createMessageId() -> String? {
+        guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String,
+        let otherUserEmail = UserDefaults.standard.value(forKey: "otherUserEmail") as? String else {
+            return nil
+        }
+        
+        let safeCurrentEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
+        
+        let dateString = Self.dateFormatter.string(from: Date())
+        let newIdentifier = "\(otherUserEmail)_\(safeCurrentEmail)_\(dateString)"
+        print ("Created Message: \(newIdentifier)")
+        return newIdentifier
+    }
+    
     func presentCamera() {
         let vc = UIImagePickerController()
         vc.sourceType = .camera
@@ -246,18 +337,64 @@ extension IceBreakerViewController: UIImagePickerControllerDelegate, UINavigatio
     }
     
     func presentPhotoPicker() {
-        let vc = UIImagePickerController()
-        vc.sourceType = .photoLibrary
-        vc.delegate = self
-        vc.allowsEditing = true
-        present(vc, animated: true)
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.delegate = self
+        picker.allowsEditing = true
+        self.present(picker, animated: true)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
-        guard let selectedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {
-            return
-        }
+        guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage,
+              let imageData = image.pngData(),
+              let messageId = createMessageId(),
+              let conversationId = UserDefaults.standard.value(forKey: "conversationId") as? String,
+              let name = UserDefaults.standard.value(forKey: "name") as? String,
+              let selfSender = self.selfSender else {
+                  return
+            }
+        
+        let fileName = "photo_message_" + messageId.replacingOccurrences(of: " ", with: "-") + ".png"
+        // Upload Image
+        StorageManager.shared.uploadMessagePhoto(with: imageData, fileName: fileName, completion: { [weak self] result in
+            switch result {
+            case .success(let urlString):
+                //Ready to send message
+                print("Uploaded Message Photo: \(urlString)")
+                
+                guard let url = URL(string: urlString),
+                      let placeholder = UIImage(systemName: "plus") else {
+                          return
+                      }
+                
+                let media = Media(url: url,
+                                  image: nil,
+                                  placeholderImage: placeholder,
+                                  size: .zero)
+                
+                
+                let message = Message(sender: selfSender,
+                                      messageId: messageId,
+                                      sentDate: Date(),
+                                      kind: .photo(media))
+                
+                guard let otherUserEmail = UserDefaults.standard.value(forKey: "otherUserEmail") as? String else {
+                    return
+                }
+                
+                DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: otherUserEmail, name: name, newMessage: message, completion: { success in
+                    if success {
+                        print("sent photo message")
+                    }
+                    else {
+                        print("failed to send photo message")
+                    }
+                })
+            case .failure(let error):
+                print("message photo upload error: \(error)")
+            }
+        })
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
