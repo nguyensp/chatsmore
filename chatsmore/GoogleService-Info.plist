@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>484279500270-18r1b8jlrav2jqg4oovith5qqcpo01eu.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.484279500270-18r1b8jlrav2jqg4oovith5qqcpo01eu</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD44EL9i5PMM5-lkasESLMu9GpQXe0YNdU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>484279500270</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>swe.chatsmore</string>
+	<key>PROJECT_ID</key>
+	<string>messenger-6f42f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>messenger-6f42f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:484279500270:ios:ffd9453a933b5cec5fa2ff</string>
+	<key>DATABASE_URL</key>
+	<string>https://messenger-6f42f-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
